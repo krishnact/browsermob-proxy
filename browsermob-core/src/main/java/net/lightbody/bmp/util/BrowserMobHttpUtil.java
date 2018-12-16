@@ -60,6 +60,24 @@ public class BrowserMobHttpUtil {
      */
     public static final int DECOMPRESS_BUFFER_SIZE = 16192;
 
+    static String [] TEXT_CAPTURE_TYPES_ARRAY= null;
+    /**
+     * To look at environment variable TEXT_CONTENT_TYPES 
+     */
+    static {
+    	String textCaptureTypes = System.getenv().get("TEXT_CONTENT_TYPES");
+    	if ( textCaptureTypes != null) {
+    		TEXT_CAPTURE_TYPES_ARRAY = textCaptureTypes.split(" ");
+    		log.info("Using following as text content mime type" + textCaptureTypes);
+    	}else {
+    		TEXT_CAPTURE_TYPES_ARRAY = new String [] {
+    				"text/",                        "application/x-javascript",
+    				"application/javascript",       "application/json",
+    				"application/xml",              "application/xhtml+xml"
+    				};
+    		log.info("Using predefined text content mime type");
+    	}
+    }
     /**
      * Returns the size of the headers, including the 2 CRLFs at the end of the header block.
      *
@@ -127,14 +145,16 @@ public class BrowserMobHttpUtil {
      * @return true if the content type is textual
      */
     public static boolean hasTextualContent(String contentType) {
-        return contentType != null &&
-                (contentType.startsWith("text/") ||
-                contentType.startsWith("application/x-javascript") ||
-                contentType.startsWith("application/javascript")  ||
-                contentType.startsWith("application/json")  ||
-                contentType.startsWith("application/xml")  ||
-                contentType.startsWith("application/xhtml+xml")
-                );
+    	if ( contentType == null )
+    		return false;
+    	
+		for (int i=0; i < TEXT_CAPTURE_TYPES_ARRAY.length;i++) {
+			if (contentType.startsWith(TEXT_CAPTURE_TYPES_ARRAY[i])){
+				return true;
+			}
+		}
+    	
+        return false;
     }
 
     /**
