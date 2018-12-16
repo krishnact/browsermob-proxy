@@ -192,6 +192,7 @@ public class HarCaptureFilter extends HttpsAwareFiltersAdapter {
 
             // associate this request's HarRequest object with the har entry
             HarRequest request = createHarRequestForHttpRequest(httpRequest);
+            request.setRemoteAddress(this.clientAddress.getHostString());
             harEntry.setRequest(request);
 
             // create a "no response received" HarResponse, in case the connection is interrupted, terminated, or the response is not received

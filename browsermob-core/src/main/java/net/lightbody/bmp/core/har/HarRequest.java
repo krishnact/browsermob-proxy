@@ -17,6 +17,7 @@ public class HarRequest {
     private volatile long headersSize; // Odd grammar in spec
     private volatile long bodySize;
     private volatile String comment = "";
+    private volatile String remoteAddress="";
 
     public HarRequest() {
     }
@@ -94,5 +95,15 @@ public class HarRequest {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+	public String getRemoteAddress() {
+		return remoteAddress;
+	}
+
+	public void setRemoteAddress(String remoteAddress) {
+		this.remoteAddress = remoteAddress;
+	}
+    
+    
 
 }
